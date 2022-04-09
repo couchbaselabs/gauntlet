@@ -1,0 +1,63 @@
+<style>
+	.signup_div {
+		width: 300px;
+		margin: 0 auto;
+		font-family: Tahoma, Geneva, sans-serif;
+	}
+	.signup_div h1 {
+		text-align: center;
+		color: #4d4d4d;
+		font-size: 24px;
+		padding: 20px 0 20px 0;
+	}
+	.signup_div input[type="password"],
+	.signup_div input[type="text"] {
+		width: 100%;
+		padding: 15px;
+		border: 1px solid #dddddd;
+		margin-bottom: 15px;
+		box-sizing:border-box;
+	}
+	.signup_div input[type="button"] {
+		width: 100%;
+		padding: 15px;
+		background-color: #535b63;
+		border: 0;
+		box-sizing: border-box;
+		cursor: pointer;
+		font-weight: bold;
+		color: #ffffff;
+	}
+</style>
+<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$(".signup_div").find("input[type=button]").click(function() {
+			password = $(".signup_div").find("input[name=password]").val();
+			retype_password = $(".signup_div").find("input[id=retype_password]").val();
+			if(password == "" || password != retype_password) {
+				response_html = '<div class="alert alert-danger">'
+	      response_html += '<strong>Fatal!</strong> Enter valid password'
+	      response_html += '</div>'
+				$(".signup_div #response").html(response_html);
+				return;
+			}
+			$(".signup_div #response").html("");
+			$(".signup_div form").submit();
+		});
+	});
+</script>
+<%- include('partials/header', {page: 'Register'}); %>
+<div class="signup_div">
+	<h1>User registration</h1>
+	<form action="register_user" method="POST">
+		<input type="text" name="firstname" placeholder="First name" required>
+		<input type="text" name="lastname" placeholder="Last name" required>
+		<input type="text" name="username" placeholder="Username" required>
+		<input type="password" name="password" placeholder="Password" required>
+		<input type="password" id="retype_password" placeholder="Re-type password" required>
+		<input type="button" value="Register" onclick="check_password()">
+		<div id="response">
+		</div>
+	</form>
+</div>

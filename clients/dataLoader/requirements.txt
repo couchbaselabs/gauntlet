@@ -1,0 +1,9 @@
+Flask
+flask-restful
+flask-cors
+paramiko
+httplib2
+requests
+python-ldap
+
+couchbase

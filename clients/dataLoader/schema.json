@@ -1,0 +1,15 @@
+{
+  "bookings": {
+    "flights": []
+  },
+  "profiles": {
+    "users": [],
+    "wallet":  ["wallet.json"]
+  },
+  "inventory": {
+    "flights": ["flightsInInventory.json"]
+  },
+  "testScope": {
+    "testCollection": ["flightsInInventory.json"]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "docId": "bankAccount",
+  "cvv": "000",
+  "card_number": "1234567812345678",
+  "recharge_history": [],
+  "wallet_balance": -1600,
+  "expiry": "08/22",
+  "id": "md5sum(username)",
+  "name_on_card": "card_user123"
+}

@@ -1,0 +1,7 @@
+e2e_app:
+  flight_endpoint:
+    ip: 172.23.122.118
+    port: 10000
+  profile_endpoint:
+    ip: 172.23.122.118
+    port: 5000

@@ -1,0 +1,87 @@
+<style>
+	.booking-form {
+		width: 300px;
+		margin: 0 auto;
+		font-family: Tahoma, Geneva, sans-serif;
+	}
+	.booking-form h1 {
+		text-align: center;
+		color: #4d4d4d;
+		font-size: 24px;
+		padding: 20px 0 20px 0;
+	}
+	.booking-form input[type="password"],
+	.booking-form input[type="text"] {
+		width: 100%;
+		padding: 15px;
+		border: 1px solid #dddddd;
+		margin-bottom: 15px;
+		box-sizing:border-box;
+	}
+	.booking-form input[type="submit"] {
+		width: 100%;
+		padding: 15px;
+		background-color: #535b63;
+		border: 0;
+		box-sizing: border-box;
+		cursor: pointer;
+		font-weight: bold;
+		color: #ffffff;
+	}
+</style>
+<%- include('partials/header', {page: 'Flight booking'}); %>
+<% if ( typeof booking_ok !== 'undefined' && booking_ok ) { %>
+	<h1> Booking Confirmation </h1>
+	<br/>
+	<table class="table table-bordered">
+		<tr>
+			<td> Flight Id </td>
+			<td> <%=booking_ok['flightId']%> </td>
+		</tr>
+		<tr>
+			<td> Booking Id </td>
+			<td> <%=booking_ok['id']%> </td>
+		</tr>
+		<tr>
+			<td> # Seats </td>
+			<td> <%=booking_ok['flightSeats']%> </td>
+		</tr>
+		<tr>
+			<td> Class </td>
+			<td> <%=booking_ok['bookingClass']%> </td>
+		</tr>
+		<tr>
+			<td> Cost </td>
+			<td> <%=booking_ok['ticket_cost']%> </td>
+		</tr>
+		<tr>
+			<td> Wallet </td>
+			<td> <%=booking_ok['bankAccount']%> </td>
+		</tr>
+		<tr>
+			<td> Status </td>
+			<td> <%=booking_ok['status']%> </td>
+		</tr>
+		<% if ("Booking failure reason" in booking_ok) { %>
+		<tr>
+			<td> Failure reason </td>
+			<td> <%=booking_ok['Booking failure reason']%> </td>
+		</tr>
+		<% } %>
+	</table>
+	<a class="btn btn-primary" href="/" role="button">Home</a>
+<% } else { %>
+	<div class="booking-form">
+		<h1>Flight <%=flight_id%> booking</h1>
+		<form action="/book_flight/<%=flight_id%>/confirm_booking" method="POST">
+			<input type="number" name="seats" step="1" value=0>
+			<select name="booking_class" class="form-select" aria-label="Default select example">
+			  <option value="" selected>Select</option>
+			  <option value="business">Business</option>
+			  <option value="economy">Economy</option>
+			</select>
+			<input type="text" name="wallet_id" placeholder="Wallet id" required>
+			<input type="submit" value="Submit">
+		</form>
+	</div>
+<% } %>

@@ -1,0 +1,73 @@
+<%- include('partials/header', {page: 'Flight Search'}); %>
+
+<style>
+  .flight_search {
+    margin-left: 5em;
+    margin-right: 5em;
+  }
+
+  #search_result {
+    margin-top: 3em;
+  }
+</style>
+
+<script>
+ function get_flights() {
+   airline = $("input[name=airline_name]").val();
+   $.get("/flight_search/"+airline, function(data) {
+     if(data == null) {
+       $("#search_result").html('<div class="alert alert-warning">\
+         <strong>Warning!</strong> No Flights to display for "' + airline + '"</div>');
+       return;
+     }
+     html_data = '<button type="button" class="btn btn-primary">' + airline + ' <span class="badge"> ' + data.length + '</span></button>';
+     html_data += '<table class="table table-striped table-bordered table-hover table-condensed">';
+     html_data += '<thead> <tr> \
+       <th>#</th> \
+       <th> Flight ID </th> \
+       <th> From </th> \
+       <th> To </th> \
+       <th> Dep Time </th> \
+       <th> Model </th> \
+       <th> Availability </th> \
+       <th> Status </th> </tr> </thead>';
+     for(var i=0; i < data.length; i++) {
+       obj = data[i].flights
+       available_seats = 0
+       for(var seat_index=0; seat_index < obj.seats.length; seat_index++) {
+         if(obj.seats[seat_index].available == true) {
+           available_seats++;
+         }
+       }
+       html_data += "<tr> <td> " + parseInt(i+1) + "</td>";
+       html_data += "<td> " + obj.flight_id + "</td>";
+       html_data += "<td> " + obj.departing_airport + "</td>";
+       html_data += "<td> " + obj.arriving_airport + "</td>";
+       html_data += "<td> " + obj.departure_date + "</td>";
+       html_data += "<td> " + obj.model + "</td>";
+       html_data += "<td> " + available_seats + " / " + obj.seats.length + "</td>";
+       html_data += "<td> " + obj.status + "</td>";
+       html_data += "<td>";
+       if(available_seats > 1) {
+         html_data += "<a href='/book_flight/"+obj.flight_id+"'> <button type='button' class='btn btn-primary'>Book</button>"
+       }
+       html_data += "</td> </tr>";
+     }
+     html_data += "</table>"
+     $("#search_result").html(html_data);
+   })
+ }
+</script>
+
+<center> <h1>Search Flights</h1> </center>
+<hr>
+<div class="flight_search">
+  <div>
+    <input type="text" name="airline_name" placeholder="Airline name" required>
+    <input type="button" value="Get flights" onclick="get_flights()">
+  </div>
+  <div id="search_result">
+  </div>
+</div>
+
+<%- include('partials/footer'); %>

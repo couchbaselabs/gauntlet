@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.services.e2eapp.E2eAppApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.466 s - in com.services.e2eapp.E2eAppApplicationTests

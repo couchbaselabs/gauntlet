@@ -1,0 +1,48 @@
+{
+  "docId": "AA001",
+  "departing_airport": "AZ",
+  "arriving_airport": "CA",
+  "departure_date": "2012-04-23T18:25:43.511Z",
+  "model": "Boeing 737",
+  "airline": "American Airlines",
+  "seats": [
+    {
+      "available": true,
+      "seatnumber": "1A",
+      "class": "economy",
+      "price": 500
+    },
+    {
+      "available": true,
+      "seatnumber": "1B",
+      "class": "economy",
+      "price": 500
+    },
+    {
+      "available": true,
+      "seatnumber": "1C",
+      "class": "economy",
+      "price": 500
+    },
+    {
+      "available": true,
+      "seatnumber": "2A",
+      "class": "economy",
+      "price": 500
+    },
+    {
+      "available": true,
+      "seatnumber": "2B",
+      "class": "economy",
+      "price": 500
+    },
+    {
+      "available": true,
+      "seatnumber": "2c",
+      "class": "economy",
+      "price": 500
+    }
+  ],
+  "flight_id": "AA001",
+  "status": "active"
+}

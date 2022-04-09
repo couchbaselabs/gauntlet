@@ -1,0 +1,13 @@
+{
+  "bankAccount": "bankAccount",
+  "bookingClass": "FirstClass",
+  "hotelRooms": 0,
+  "flightId": "AA001",
+  "id": "020a4423-33cb-4f26-b6b2-6e265deb1555",
+  "TicketsBooked": [
+    "1A"
+  ],
+  "totalCost": 100,
+  "flightSeats": 1,
+  "status": "Booking Confirmed"
+}
