@@ -32,13 +32,9 @@ public class BookingService {
     private final int flightTicketCost =100;
 
     private static final Logger logger = LogUtil.getLogger(BookingService.class);
-    /*private final String CB_SERVER_HOST = System.getenv("DB_HOSTNAME");
+    private final String CB_SERVER_HOST = System.getenv("DB_HOSTNAME");
     private final String CB_ADMIN_USER = System.getenv("CAPELLA_USERNAME");
-    private final String CB_ADMIN_PASSWORD = System.getenv("CAPELLA_PASSWORD");*/
-
-    private final String CB_SERVER_HOST = "cb.wdffruwj0habuyu.cloud.couchbase.com";
-    private final String CB_ADMIN_USER = "admin";
-    private final String CB_ADMIN_PASSWORD = "1@Password";
+    private final String CB_ADMIN_PASSWORD = System.getenv("CAPELLA_PASSWORD");
 
     private String bookingId="";
     private String flightId="";

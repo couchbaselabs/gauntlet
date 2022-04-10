@@ -12,9 +12,9 @@ RUN alternatives --install /usr/local/bin/python3 python3 /usr/local/bin/python3
 RUN alternatives --install /usr/local/bin/pip3 pip3 /usr/local/bin/pip3.9 1
 WORKDIR /root
 # clone the repo
-RUN mkdir e2e-app
-ADD e2e-app /root/e2e-app/
-WORKDIR e2e-app
+RUN mkdir gauntlet
+ADD gauntlet /root/gauntlet/
+WORKDIR gauntlet
 # RUN chmod -R 777 *
 
 # To support CB py-sdk package
@@ -29,5 +29,5 @@ RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --upgrade setuptools wheel
 RUN pip3 install -r services/profile/requirements.txt
 
-ENV PYTHONPATH /root/e2e-app
+ENV PYTHONPATH /root/gauntlet
 CMD ["python3", "./services/profile/app.py"]

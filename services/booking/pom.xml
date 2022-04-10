@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.services</groupId>
-	<artifactId>e2e-app</artifactId>
+	<artifactId>gauntlet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>e2e-app</name>
+	<name>gauntlet</name>
 	<description>Couchbase E2E App</description>
 	<properties>
 		<java.version>8</java.version>

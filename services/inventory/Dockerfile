@@ -17,14 +17,14 @@ WORKDIR /app
 # are not changed.
 
 # Copy go mod and sum files
-COPY e2e-app/services/inventory/go.mod ./
-COPY e2e-app/services/inventory/go.sum ./
+COPY gauntlet/services/inventory/go.mod ./
+COPY gauntlet/services/inventory/go.sum ./
 
 # Download all dependencies.
 RUN go mod download
 
 # Now, copy the source code
-COPY e2e-app/services/inventory/ .
+COPY gauntlet/services/inventory/ .
 
 # Note here: CGO_ENABLED is disabled for cross system compilation
 # It is also a common best practise.
