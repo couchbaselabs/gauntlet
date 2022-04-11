@@ -1,6 +1,6 @@
 class Queries:
-    users_collection = "`e2e_poc`.`profiles`.`users`"
-    uri_collection = "e2e_poc.stack.api_details"
+    users_collection = "`e2e`.`profiles`.`users`"
+    uri_collection = "e2e.stack.api_details"
     get_user_password = f"SELECT `password` FROM {users_collection} WHERE `username` = '{{0}}'"
     get_user_id = f"SELECT `id` FROM {users_collection} WHERE `username` = '{{0}}'"
     get_all_bookings = f"SELECT bookings FROM {users_collection} WHERE `username` = '{{0}}'"
