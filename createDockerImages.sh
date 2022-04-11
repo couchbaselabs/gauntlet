@@ -18,7 +18,8 @@ then
     fi
     cd ..
     docker rmi $SERVICE 2> /dev/null
-    docker image build -t e2e:$SERVICE .
+    docker image build -t couchbaseqe/gauntlet:$SERVICE .
+    docker push couchbaseqe/gauntlet:$SERVICE
     if [ $? != 0 ]
     then
         echo "Error creating the docker image for $SERVICE"
@@ -29,7 +30,9 @@ else
     then
           cd database
           docker rmi $SERVICE 2> /dev/null
-          docker image build -t e2e:$SERVICE .
+          docker image build -t couchbaseqe/gauntlet:$SERVICE .
+          docker push couchbaseqe/gauntlet:$SERVICE
+
     else
           if [ $SERVICE = "dataloader" ]
               then
@@ -37,7 +40,8 @@ else
                     cp -rf clients/$SERVICE/Dockerfile ../
                     cd ..
                     docker rmi $SERVICE 2> /dev/null
-                    docker image build -t e2e:$SERVICE .
+                    docker image build -t docker push couchbaseqe/gauntlet:$SERVICE .
+                    docker push couchbaseqe/gauntlet:$SERVICE
               else
                     echo "Not a valid service. Valid services are profile, booking,  inventory and ui only"
               exit 1
