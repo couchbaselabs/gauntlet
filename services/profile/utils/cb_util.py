@@ -10,7 +10,7 @@ class CBConnection:
             PasswordAuthenticator(username, password)
         ))
 
-        self.cb = self.cluster.bucket("e2e_poc")
+        self.cb = self.cluster.bucket("e2e")
         self.cb_coll = self.cb.scope("profiles").collection("users");
 
     def add_user(self, firstname, lastname, username, password, pass_id):

@@ -90,7 +90,7 @@ func getAllFlights(w http.ResponseWriter, r *http.Request) {
 	airlineParam := vars["airline"]
 	fmt.Println(airlineParam)
 	// Perform a N1QL Query
-	query := fmt.Sprintf("SELECT * FROM `e2e_poc`.inventory.flights WHERE airline='%s' LIMIT 10;", airlineParam)
+	query := fmt.Sprintf("SELECT * FROM `e2e`.inventory.flights WHERE airline='%s' LIMIT 10;", airlineParam)
 	fmt.Println(query)
 	queryResult, err := CBCluster.Query(query, &gocb.QueryOptions{})
 	// check query was successful
@@ -125,7 +125,7 @@ func handleRequests() {
 
 func main() {
 	hostname := os.Getenv("DB_HOSTNAME")
-	bucketName := "e2e_poc"
+	bucketName := "e2e"
 	username := os.Getenv("CAPELLA_USERNAME")
 	password := os.Getenv("CAPELLA_PASSWORD")
 
