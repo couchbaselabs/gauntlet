@@ -53,6 +53,30 @@ class CreateUser(Resource):
         return {"Msg": "User Created Successfully"}, 200
 
 
+class DeleteUser(Resource):
+    def __init__(self, cb, commonutil):
+        self.cb = cb
+        self.commonutil = commonutil
+        self.message = "deleting user"
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', required=True)
+        parser.add_argument('firstname', required=True)
+        parser.add_argument('lastname', required=True)
+        args = parser.parse_args()
+
+        res = self.commonutil.ldap_util.delete_user(args)
+        if res is False:
+            return {"Error": "LDAP User Deletion failed"}, 400
+
+        # Don't worry about the outcome since this can fail
+        # if the user document is not present in the database
+        self.cb.delete_user(args['firstname'], args['lastname'])
+
+        return {"Msg": "User Deleted Successfully"}, 200
+
+
 class ConfirmBooking(Resource):
     def __init__(self, cb, commonutil):
         self.cb = cb

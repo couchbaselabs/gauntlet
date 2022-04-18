@@ -54,3 +54,17 @@ class LdapUtil(object):
             print("Ldap user create failed: %s" % e)
             return False
         return True
+
+    def delete_user(self, params):
+        username = params["username"]
+        dn = 'uid=%s,%s' % (username, self.base_dn)
+
+        try:
+            self.__connect()
+            self.connection.simple_bind_s(self.admin_user, self.admin_password)
+            self.connection.delete_s(dn)
+            self.__disconnect()
+        except Exception as e:
+            print("Ldap user delete failed: %s" % e)
+            return False
+        return True
