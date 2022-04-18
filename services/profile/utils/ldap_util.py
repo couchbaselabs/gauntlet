@@ -66,5 +66,4 @@ class LdapUtil(object):
             self.__disconnect()
         except Exception as e:
             print("Ldap user delete failed: %s" % e)
-            return False
         return True
