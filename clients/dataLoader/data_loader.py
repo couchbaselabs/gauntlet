@@ -1,4 +1,5 @@
-import os, json
+import json
+import os
 from clients.dataLoader.utils.defaults import Default
 from clients.dataLoader.utils.cb_util import CBConnection
 
@@ -7,22 +8,22 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 
 class DataLoader:
     def __init__(self):
-        self.cb = CBConnection(Default.cb_username, Default.cb_password, Default.cb_host, Default.cb_bucketname)
+        self.cb = CBConnection(Default.cb_username, Default.cb_password,
+                               Default.cb_host, Default.cb_bucketname)
 
-    def loadData(self):
+    def load_data(self):
         with open(script_dir + '/schema.json', 'r') as schemaFile:
-            dataSchema = json.load(schemaFile)
-            for scopeName in dataSchema:
+            data_schema = json.load(schemaFile)
+            for scopeName in data_schema:
                 self.cb.createScope(scopeName)
-                scopeSchema = dataSchema[scopeName]
-                for collectionName in scopeSchema:
-                    self.cb.createCollection(collectionName,scopeName)
-                    collectionSchema = scopeSchema[collectionName]
-                    for documentName in collectionSchema:
-                        self.cb.upsertDocument(scopeName,collectionName,documentName)
+                scope_schema = data_schema[scopeName]
+                for collectionName in scope_schema:
+                    self.cb.createCollection(collectionName, scopeName)
+                    collection_schema = scope_schema[collectionName]
+                    for documentName in collection_schema:
+                        self.cb.upsertDocument(scopeName, collectionName,
+                                               documentName)
+
 
 if __name__ == "__main__":
-    DataLoader().loadData()
-
-
-
+    DataLoader().load_data()
