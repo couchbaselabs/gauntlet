@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"time"
@@ -16,10 +15,10 @@ import (
 )
 
 type Seat struct {
-	seatnumber string
-	available  string
-	class      string
-	price      string
+	SeatNumber string `json:"seatnumber"`
+	Available  bool   `json:"available"`
+	Class      string `json:"class"`
+	Price      int64  `json:"price"`
 }
 
 // Flight
@@ -49,15 +48,14 @@ func createNewFlight(w http.ResponseWriter, r *http.Request) {
 	}
 	var newflight Flight
 	json.Unmarshal(reqBody, &newflight)
-	
-	flightId := fmt.Sprintf("%s%d", "AA", rand.Intn(100))
-	newflight.FlightID = flightId
-	_, err = FlightsCollection.Upsert(flightId, newflight, nil)
+
+    log.Println("Creating flight %s", newflight.FlightID)
+	_, err = FlightsCollection.Upsert(newflight.FlightID, newflight, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// Get the document back
-	getResult, err := FlightsCollection.Get(flightId, nil)
+	getResult, err := FlightsCollection.Get(newflight.FlightID, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
