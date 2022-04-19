@@ -1,3 +1,4 @@
+import hashlib
 import uuid
 
 from flask_restful import Resource, reqparse
@@ -53,6 +54,56 @@ class CreateUser(Resource):
         return {"Msg": "User Created Successfully"}, 200
 
 
+class CreateUserWallet(Resource):
+    def __init__(self, cb, commonutil):
+        self.cb = cb
+        self.commonutil = commonutil
+        self.message = "creating user wallet"
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('doc_id', required=True)
+        parser.add_argument('firstname', required=True)
+        parser.add_argument('lastname', required=True)
+        parser.add_argument('username', required=True)
+        parser.add_argument('card_number', required=True)
+        parser.add_argument('cvv', required=True)
+        parser.add_argument('expiry', required=True)
+        args = parser.parse_args()
+
+        name_on_card = args['firstname'] + " " + args['lastname']
+        user_id_hash = hashlib.md5(args['username'].encode('utf-8'))\
+            .hexdigest()
+        res = self.cb.create_wallet(args["doc_id"], name_on_card,
+                                    args["card_number"], args["cvv"],
+                                    args["expiry"], user_id_hash)
+        if not res:
+            return {"Error": "Wallet Creation failed"}, 400
+
+        return {"Msg": "User Wallet Created"}, 200
+
+
+class LoadUserWallet(Resource):
+    def __init__(self, cb, commonutil):
+        self.cb = cb
+        self.commonutil = commonutil
+        self.message = "loading user wallet"
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', required=True)
+        parser.add_argument('amount', required=True)
+        args = parser.parse_args()
+
+        user_id_hash = hashlib.md5(args['username'].encode('utf-8')) \
+            .hexdigest()
+        res = self.cb.load_wallet(user_id_hash, args["amount"])
+        if not res:
+            return {"Error": "Wallet loading failed"}, 400
+
+        return {"Msg": "Wallet loaded successfully"}, 200
+
+
 class DeleteUser(Resource):
     def __init__(self, cb, commonutil):
         self.cb = cb
@@ -66,13 +117,15 @@ class DeleteUser(Resource):
         parser.add_argument('lastname', required=True)
         args = parser.parse_args()
 
+        user_id_hash = hashlib.md5(args['username'].encode('utf-8')) \
+            .hexdigest()
         res = self.commonutil.ldap_util.delete_user(args)
         if res is False:
             return {"Error": "LDAP User Deletion failed"}, 400
 
         # Don't worry about the outcome since this can fail
         # if the user document is not present in the database
-        self.cb.delete_user(args['firstname'], args['lastname'])
+        self.cb.delete_user(args['firstname'], args['lastname'], user_id_hash)
 
         return {"Msg": "User Deleted Successfully"}, 200
 

@@ -1,7 +1,10 @@
+from time import time
+
 from couchbase.cluster import Cluster, ClusterOptions
 from couchbase_core.cluster import PasswordAuthenticator
 from couchbase.exceptions import DocumentExistsException, \
-    DocumentNotFoundException
+    DocumentNotFoundException, CouchbaseException
+import couchbase.subdocument as sub_doc
 from services.profile.utils.constants import Queries
 
 
@@ -25,11 +28,47 @@ class CBConnection:
         except DocumentExistsException:
             return False
 
-    def delete_user(self, firstname, lastname):
+    def delete_user(self, firstname, lastname, user_id_hash):
         try:
+            # Remove the document from profiles::users
             self.cb_coll.remove(f'{firstname}_{lastname}')
+            # Remove the document from profiles::wallet
+            wallet = self.cb.scope("profiles").collection("wallet")
+            wallet.remove(user_id_hash)
         except DocumentNotFoundException:
             pass
+        return True
+
+    def create_wallet(self, doc_id, name_on_card, card_num, card_cvv,
+                      card_expiry, user_id_hash):
+        wallet = self.cb.scope("profiles").collection("wallet")
+        doc = {"docId": doc_id, "name_on_card": name_on_card,
+               "card_number": card_num, "cvv": card_cvv,
+               "recharge_history": [], "wallet_balance": 0,
+               "expiry": card_expiry, "id": user_id_hash}
+        try:
+            wallet.insert(user_id_hash, doc)
+        except CouchbaseException as e:
+            print("CB EXCEPTION: %s" % e)
+            return False
+        return True
+
+    def load_wallet(self, doc_id, amt_to_load):
+        wallet = self.cb.scope("profiles").collection("wallet")
+        try:
+            amt = wallet.lookup_in(doc_id, [sub_doc.get("wallet_balance")]) \
+                .content_as[float](0)
+            amt += float(amt_to_load)
+            wallet.mutate_in(doc_id,
+                             (sub_doc.upsert("wallet_balance", amt),
+                              sub_doc.array_append("recharge_history",
+                                                   [time(), amt_to_load])))
+        except CouchbaseException as e:
+            print("CB EXCEPTION: %s" % e)
+            return False
+        except Exception as e:
+            print("Generic exception %s" % e)
+            return False
         return True
 
     def get_user(self, user):

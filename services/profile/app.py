@@ -2,7 +2,8 @@ from flask import Flask
 from flask_restful import Api
 import logging
 from services.profile.endpoints.booking import ConfirmBooking, AllBookings, \
-    CreateUser, CancelBooking, DeleteUser, EditBooking, GetBooking, UserAuth
+    CreateUser, CancelBooking, DeleteUser, EditBooking, GetBooking, UserAuth, \
+    CreateUserWallet, LoadUserWallet
 from services.profile.utils.cb_util import CBConnection
 from services.profile.utils.common_util import CommonUtil
 from services.profile.utils.defaults import Default
@@ -30,6 +31,10 @@ class App:
         self.api.add_resource(CreateUser, '/createUser',
                               resource_class_args=(self.cb, self.common_util))
         self.api.add_resource(DeleteUser, '/deleteUser',
+                              resource_class_args=(self.cb, self.common_util))
+        self.api.add_resource(CreateUserWallet, '/createWallet',
+                              resource_class_args=(self.cb, self.common_util))
+        self.api.add_resource(LoadUserWallet, '/loadWallet',
                               resource_class_args=(self.cb, self.common_util))
         self.api.add_resource(CancelBooking, '/cancelBooking',
                               resource_class_args=(self.cb, self.common_util))
