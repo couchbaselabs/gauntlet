@@ -18,13 +18,14 @@ WORKDIR /app
 
 # Copy go mod and sum files
 COPY gauntlet/services/inventory/go.mod ./
-COPY gauntlet/services/inventory/go.sum ./
-
-# Download all dependencies.
-RUN go mod download
+# COPY gauntlet/services/inventory/go.sum ./
 
 # Now, copy the source code
 COPY gauntlet/services/inventory/ .
+# Download all dependencies.
+RUN go mod tidy
+RUN go mod download
+
 
 # Note here: CGO_ENABLED is disabled for cross system compilation
 # It is also a common best practise.
