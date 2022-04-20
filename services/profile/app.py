@@ -20,6 +20,8 @@ class App:
         self.cb = CBConnection(Default.cb_username, Default.cb_password, Default.cb_host)
         self.common_util = CommonUtil(self.cb)
 
+        self.cb.create_profile_users_primary_index()
+
         self.api.add_resource(UserAuth, '/user_auth',
                               resource_class_args=(self.cb, self.common_util))
         self.api.add_resource(ConfirmBooking, '/confirmBooking',

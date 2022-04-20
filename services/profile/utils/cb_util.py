@@ -71,6 +71,14 @@ class CBConnection:
             return False
         return True
 
+    def create_profile_users_primary_index(self):
+        query = "CREATE PRIMARY INDEX profile_users_pri_index " \
+                "IF NOT EXISTS ON `e2e`.`profiles`.`users`"
+        try:
+            self.run_query(query)
+        except CouchbaseException:
+            pass
+
     def get_user(self, user):
         query = Queries.get_user_password.format(user)
         return self.run_query(query)
