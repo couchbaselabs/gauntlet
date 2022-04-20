@@ -18,8 +18,7 @@ then
     fi
     cd ..
     docker rmi $SERVICE 2> /dev/null
-    docker image build -t couchbaseqe/gauntlet:$SERVICE .
-    docker push couchbaseqe/gauntlet:$SERVICE
+    docker image build -t couchbaseqe/gauntlet:$SERVICE . && docker push couchbaseqe/gauntlet:$SERVICE
     if [ $? != 0 ]
     then
         echo "Error creating the docker image for $SERVICE"
