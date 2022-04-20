@@ -124,6 +124,8 @@ func handleRequests() {
 func main() {
 	hostname := os.Getenv("DB_HOSTNAME")
 	bucketName := "e2e"
+	scope_name := "inventory"
+	collection_name := "flights"
 	username := os.Getenv("CAPELLA_USERNAME")
 	password := os.Getenv("CAPELLA_PASSWORD")
 
@@ -140,17 +142,32 @@ func main() {
 
     CBCluster = cluster
 	bucket := cluster.Bucket(bucketName)
-	err = bucket.WaitUntilReady(5*time.Second, nil)
+	err = bucket.WaitUntilReady(60*time.Second, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// Get a user-defined collection reference
-	InventoryScope = bucket.Scope("inventory")
-	FlightsCollection = InventoryScope.Collection("flights")
+	InventoryScope = bucket.Scope(scope_name)
+	FlightsCollection = InventoryScope.Collection(collection_name)
 
-	cluster.QueryIndexes().CreatePrimaryIndex(bucketName, &gocb.CreatePrimaryQueryIndexOptions{
-		IgnoreIfExists: true,
-	})
+    queryResult, err := CBCluster.Query("CREATE PRIMARY INDEX inventory_flights_pri_index ON e2e.inventory.flights", &gocb.QueryOptions{})
+    for queryResult.Next() {
+		var result interface{}
+		err := queryResult.Row(&result)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(result)
+	}
+    if err = queryResult.Err(); err != nil {
+		panic(err)
+	}
+// 	cluster.QueryIndexes().CreatePrimaryIndex(bucketName, &gocb.CreatePrimaryQueryIndexOptions{
+// 		IgnoreIfExists: true,
+// 		CustomName: "flight_inventory_primary_index",
+// 		ScopeName: scope_name,
+// 		CollectionName: collection_name,
+// 	})
 
 	handleRequests()
 }
